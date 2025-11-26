@@ -1,0 +1,186 @@
+-- =============================================
+-- CONSULTA 1 -> Identificação de Clientes com Pedidos Anteriores a 2024
+-- =============================================
+SELECT 
+    c.nome AS cliente,
+    c.email,
+    c.telefone
+FROM clientes c
+JOIN pedidos p ON c.id = p.cliente_id
+WHERE p.data_pedido < '2024-01-01'
+GROUP BY c.id, c.nome, c.email, c.telefone
+LIMIT 10;
+
+-- =============================================
+-- CONSULTA 2 -> Produtos Premium por Categoria (5 JOINS)
+-- =============================================
+SELECT 
+    cat.nome AS categoria,
+    p.nome AS produto,
+    p.preco,
+    e.quantidade
+FROM produtos p
+JOIN estoque e on p.id = e.id
+JOIN categorias cat ON p.id = cat.id
+JOIN itens_pedido ip ON p.id = ip.id
+JOIN pedidos ped ON ip.id = ped.id
+JOIN clientes c ON ped.id = c.id
+WHERE p.preco > 200
+ORDER BY p.preco DESC;
+-- =============================================
+-- CONSULTA 3 -> Pedidos Detalhados com Pagamento (5 JOINS)
+-- =============================================
+SELECT 
+    c.nome AS cliente,
+    p.total AS valor_pedido,
+    pag.metodo AS pagamento,
+    e.cidade,
+    e.estado
+FROM pedidos p
+JOIN clientes c ON p.cliente_id = c.id
+JOIN pagamentos pag ON p.id = pag.pedido_id
+JOIN enderecos e ON p.endereco_id = e.id
+JOIN itens_pedido ip ON p.id = ip.pedido_id
+JOIN produtos prod ON ip.produto_id = prod.id
+WHERE p.status = 'entregue'
+ORDER BY p.total DESC;
+
+-- =============================================
+-- CONSULTA 4 -> Produtos e Fornecedores 
+-- =============================================
+SELECT 
+    p.nome AS produto,
+    f.nome AS fornecedor,
+    f.telefone,
+    f.email
+FROM produtos p
+JOIN fornecedores f ON p.id = f.id
+ORDER BY f.nome, p.nome;
+
+-- =============================================
+-- CONSULTA 5 -> Clientes por Estado
+-- =============================================
+SELECT 
+    c.nome AS cliente,
+    e.cidade,
+    e.estado
+FROM clientes c
+JOIN enderecos e ON c.id = e.id 
+ORDER BY c.nome, e.cidade, e.estado
+LIMIT 15;
+
+-- =============================================
+-- CONSULTA 6 -> Produtos Bem Avaliados
+-- =============================================
+SELECT 
+	c.nome AS cliente,
+    p.nome AS produto,
+    a.nota,
+    a.comentario
+FROM produtos p
+JOIN avaliacoes a ON p.id = a.produto_id
+JOIN clientes c ON a.cliente_id = c.id
+WHERE a.nota >= 4
+ORDER BY a.nota DESC, p.nome;
+
+-- =============================================
+-- CONSULTA 7 -> Métodos de Pagamento Utilizados
+-- =============================================
+SELECT 
+    pag.metodo AS pagamento,
+    p.data_pedido,
+    p.total
+FROM pedidos p
+JOIN pagamentos pag ON p.id = pag.pedido_id
+WHERE p.status = 'entregue'
+ORDER BY pag.metodo, p.data_pedido DESC;
+
+-- =============================================
+-- CONSULTA 8 -> Histórico de Alterações de Pedidos
+-- =============================================
+SELECT 
+    p.id AS pedido,
+    c.nome AS cliente,
+    p.status AS status_atual,
+    l.status_anterior,
+    l.data_alteracao
+FROM pedidos p
+JOIN clientes c ON p.cliente_id = c.id
+JOIN log_pedidos l ON p.id = l.pedido_id
+ORDER BY l.data_alteracao DESC;
+
+-- =============================================
+-- CONSULTA 9 -> Análise de Entregas Realizadas por Localidade
+-- =============================================
+SELECT 
+    p.data_entrega,
+    e.cidade,
+    e.estado
+FROM pedidos p
+JOIN enderecos e ON p.id = e.id
+WHERE p.status = 'entregue'
+  AND p.data_entrega IS NOT NULL
+ORDER BY p.data_entrega DESC;
+
+-- =============================================
+-- CONSULTA 10 -> Itens no Carrinho 
+-- =============================================
+SELECT 
+    c.nome AS cliente,
+    p.nome AS produto,
+    car.quantidade
+FROM carrinho car
+JOIN clientes c ON car.id = c.id
+JOIN produtos p ON car.id = p.id
+-- =============================================
+-- CONSULTA 11 -> Pedidos Recentes com Detalhes
+-- =============================================
+SELECT 
+    p.id AS pedido,
+    c.nome AS cliente,
+    p.data_pedido,
+    p.total,
+    p.status
+FROM pedidos p
+JOIN clientes c ON p.cliente_id = c.id
+WHERE p.data_pedido <= '2024-06-01'
+
+-- =============================================
+-- CONSULTA 12 -> Produtos com Estoque Crítico
+-- =============================================
+SELECT 
+    p.nome AS produto,
+    e.quantidade,
+    e.quantidade_minima
+FROM produtos p
+JOIN estoque e ON p.id = e.produto_id
+WHERE e.quantidade >= e.quantidade_minima
+ORDER BY e.quantidade ASC;
+
+-- =============================================
+-- CONSULTA 13 -> Catálogo de Produtos por Categoria e Preço
+-- =============================================
+SELECT 
+    m.nome AS marca,
+    cat.nome AS categoria,
+    p.nome AS produto,
+    p.preco
+FROM produtos p
+JOIN marcas m ON p.marca_id = m.id
+JOIN categorias cat ON p.categoria_id = cat.id
+WHERE p.ativo = 1
+ORDER BY m.nome, cat.nome, p.preco DESC;
+
+-- =============================================
+-- CONSULTA 14 -> Mapeamento de Clientes por Região
+-- =============================================
+SELECT 
+    c.nome AS cliente,
+    c.email,
+    c.telefone,
+    e.cidade,
+    e.estado
+FROM clientes c
+JOIN enderecos e ON c.endereco_id = e.id
+WHERE c.newsletter = 1
+ORDER BY e.estado, e.cidade;

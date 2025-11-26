@@ -1,0 +1,79 @@
+1. Identificação de Clientes com Pedidos Anteriores a 2024
+
+Tabelas unidas: clientes + pedidos
+Atributos mostrados: nome do cliente, e-mail, telefone
+Critério: pedidos feitos antes de 2024.
+
+2. Produtos Premium por Categoria
+
+Tabelas unidas: produtos, estoque, categorias, itens_pedido, pedidos, clientes
+Atributos mostrados: nome da categoria, nome do produto, preço do produto, quantidade em estoque
+Critério: produtos com preço acima de 200.
+
+3. Pedidos Detalhados com Pagamento
+
+Tabelas unidas: pedidos, clientes, pagamentos, enderecos, itens_pedido, produtos
+Atributos mostrados: nome do cliente, valor total do pedido, método de pagamento, cidade, estado
+Critério: apenas pedidos com status "entregue".
+
+4. Produtos e Fornecedores
+
+Tabelas unidas: produtos + fornecedores
+Atributos mostrados: nome do produto, nome do fornecedor, telefone e e-mail do fornecedor.
+
+5. Clientes por Estado
+
+Tabelas unidas: clientes + enderecos
+Atributos mostrados: nome do cliente, cidade e estado.
+
+6. Produtos Bem Avaliados
+
+Tabelas unidas: produtos, avaliacoes, clientes
+Atributos mostrados: nome do cliente, nome do produto, nota da avaliação, comentário da avaliação
+Critério: somente notas 4 ou 5.
+
+7. Métodos de Pagamento Utilizados
+
+Tabelas unidas: pedidos + pagamentos
+Atributos mostrados: método de pagamento, data do pedido, valor total
+Critério: pedidos entregues.
+
+8. Histórico de Alterações de Pedidos
+
+Tabelas unidas: pedidos, clientes, log_pedidos
+Atributos mostrados: id do pedido, nome do cliente, status, status anterior, data da alteração.
+
+9. Entregas por Localidade
+
+Tabelas unidas: pedidos + enderecos
+Atributos mostrados: data de entrega, cidade e estado
+Critério: pedidos entregues e com data de entrega informada.
+
+10. Itens no Carrinho
+
+Tabelas unidas: carrinho, clientes, produtos
+Atributos mostrados: nome do cliente, nome do produto, quantidade no carrinho.
+
+11. Pedidos Recentes com Detalhes
+
+Tabelas unidas: pedidos + clientes
+Atributos mostrados: número do pedido, cliente, data do pedido, valor total, status
+Critério: pedidos feitos até 01/06/2024.
+
+12. Produtos com Estoque Crítico
+
+Tabelas unidas: produtos + estoque
+Atributos mostrados: nome do produto, quantidade atual e quantidade mínima
+Critério: produtos com estoque igual ou abaixo do mínimo.
+
+13. Catálogo de Produtos por Categoria e Marca
+
+Tabelas unidas: produtos, marcas, categorias
+Atributos mostrados: marca, categoria, nome do produto, preço
+Critério: somente produtos ativos.
+
+14. Mapeamento de Clientes por Região
+
+Tabelas unidas: clientes + enderecos
+Atributos mostrados: nome do cliente, e-mail, telefone, cidade e estado
+Critério: clientes inscritos na newsletter.
