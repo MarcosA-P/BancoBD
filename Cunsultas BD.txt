@@ -181,6 +181,5 @@ SELECT
     e.cidade,
     e.estado
 FROM clientes c
-JOIN enderecos e ON c.endereco_id = e.id
-WHERE c.newsletter = 1
+JOIN enderecos e ON c.id = e.id
 ORDER BY e.estado, e.cidade;
